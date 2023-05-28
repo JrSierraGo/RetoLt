@@ -1,9 +1,8 @@
-##Spring Configuration
 server:
   port: 8080
 spring:
   application:
-    name: people
+    name: "people"
   devtools:
     add-properties: false
   h2:
@@ -11,4 +10,18 @@ spring:
       enabled: true
       path: /h2
   profiles:
-    include:
+    include: null
+  datasource:
+    url: "jdbc:postgresql://${people_database_url}/${people_database_name}"
+    username: "${people_database_username}"
+    password: "${people_database_password}"
+    driverClassName: "org.postgresql.Driver"
+    platform: postgres
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 30000
+      idle-timeout: 300000
+      max-lifetime: 900000
+  jpa:
+    database: POSTGRESQL
+    databasePlatform: "org.hibernate.dialect.PostgreSQLDialect"
