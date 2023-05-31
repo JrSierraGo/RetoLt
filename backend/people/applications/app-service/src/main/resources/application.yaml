@@ -8,7 +8,7 @@ spring:
   h2:
     console:
       enabled: true
-      path: /h2
+      path: "/h2"
   profiles:
     include: null
   datasource:
@@ -16,12 +16,21 @@ spring:
     username: "${people_database_username}"
     password: "${people_database_password}"
     driverClassName: "org.postgresql.Driver"
-    platform: postgres
+    platform: "postgres"
     hikari:
       maximum-pool-size: 10
       connection-timeout: 30000
       idle-timeout: 300000
       max-lifetime: 900000
   jpa:
-    database: POSTGRESQL
+    database: "POSTGRESQL"
     databasePlatform: "org.hibernate.dialect.PostgreSQLDialect"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus"
+  endpoint:
+    health:
+      probes:
+        enabled: true

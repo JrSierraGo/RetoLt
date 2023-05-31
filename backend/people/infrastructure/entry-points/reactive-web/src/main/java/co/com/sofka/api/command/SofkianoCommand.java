@@ -1,0 +1,34 @@
+package co.com.sofka.api.command;
+
+import co.com.sofka.api.dto.SofkianoDTO;
+import co.com.sofka.domainconverter.DomainMapper;
+import co.com.sofka.model.Sofkiano;
+import co.com.sofka.usecase.SofkianoCommandUseCase;
+import org.reactivecommons.utils.ObjectMapper;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+
+@RestController
+@RequestMapping(path = "/api/ms-people/api/people/sofkiano/command")
+public class SofkianoCommand extends DomainMapper<Sofkiano, SofkianoDTO> {
+
+    private final SofkianoCommandUseCase useCase;
+
+    protected SofkianoCommand(ObjectMapper mapper, Class<Sofkiano> domainClass, Class<SofkianoDTO> dtoClass, SofkianoCommandUseCase useCase) {
+        super(mapper, domainClass, dtoClass);
+        this.useCase = useCase;
+    }
+
+
+    @PostMapping(
+            path = "/save",
+            produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public Mono<SofkianoDTO> saveSofkiano(SofkianoDTO sofkianoDTO) {
+        return useCase.process(this.dtoToDomain(sofkianoDTO))
+                .map(this::domainToDTO);
+    }
+}

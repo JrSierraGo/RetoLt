@@ -1,6 +1,8 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
+	implementation project( ':domain-converter')
+	implementation project( ':reactive-web')
 	implementation 'org.reactivecommons.utils:object-mapper:0.1.0'
 	implementation project( ':jpa-repository')
     implementation project(':model')
