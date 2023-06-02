@@ -1,9 +1,12 @@
 package co.com.sofka.jpa.helper;
 
 import org.reactivecommons.utils.ObjectMapper;
-import org.springframework.data.domain.Example;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
+import org.springframework.data.repository.query.ReactiveQueryByExampleExecutor;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -35,38 +38,36 @@ public abstract class AdapterOperations<E, D, I, R extends CrudRepository<D, I> 
         return data != null ? toEntityFn.apply(data) : null;
     }
 
-    public E save(E entity) {
-        D data = toData(entity);
-        return toEntity(saveData(data));
+    public Mono<E> save(E entity) {
+        return Mono.just(entity)
+                .map(this::toData)
+                .flatMap(this::saveData)
+                .map(this::toEntity);
     }
 
-    protected List<E> saveAllEntities(List<E> entities) {
-        List<D> list = entities.stream().map(this::toData).collect(Collectors.toList());
-        return toList(saveData(list));
+    public Flux<E> saveAll(List<E> entities) {
+        return Flux.fromIterable(entities)
+                .map(this::toData)
+                .collect(Collectors.toList())
+                .flatMapMany(this::saveData)
+                .map(this::toEntity);
     }
 
-    public List<E> toList(Iterable<D> iterable) {
-        return stream(iterable.spliterator(), false).map(this::toEntity).collect(Collectors.toList());
+    protected Mono<D> saveData(D data) {
+        return Mono.just(repository.save(data));
     }
 
-    protected D saveData(D data) {
-        return repository.save(data);
+    protected Flux<D> saveData(List<D> data) {
+        return Flux.fromIterable(repository.saveAll(data));
     }
 
-    protected Iterable<D> saveData(List<D> data) {
-        return repository.saveAll(data);
+    public Mono<E> findById(I id) {
+        return Mono.justOrEmpty(repository.findById(id))
+                .map(this::toEntity);
     }
 
-    public E findById(I id) {
-        return toEntity(repository.findById(id).orElse(null));
-    }
-
-    public List<E> findByExample(E entity) {
-        return toList(repository.findAll( Example.of(toData(entity))));
-    }
-
-
-    public List<E> findAll(){
-        return toList(repository.findAll());
+    public Flux<E> findAll(){
+        return repository.findAll()
+                .map(this::toEntity);
     }
 }

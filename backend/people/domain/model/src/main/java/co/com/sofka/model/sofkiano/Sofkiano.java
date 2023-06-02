@@ -1,12 +1,10 @@
-package co.com.sofka.model;
+package co.com.sofka.model.sofkiano;
+import lombok.*;
+//import lombok.NoArgsConstructor;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
 
-@Builder(toBuilder = true)
-@ToString
 @Data
+@Builder(toBuilder = true)
 public class Sofkiano {
     private String id;
     private String documentTypeId;
