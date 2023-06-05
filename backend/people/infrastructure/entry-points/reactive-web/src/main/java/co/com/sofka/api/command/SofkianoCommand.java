@@ -17,8 +17,8 @@ public class SofkianoCommand extends DomainMapper<Sofkiano, SofkianoDTO> {
 
     private final SofkianoCommandUseCase useCase;
 
-    protected SofkianoCommand(ObjectMapper mapper, Class<Sofkiano> domainClass, Class<SofkianoDTO> dtoClass, SofkianoCommandUseCase useCase) {
-        super(mapper, domainClass, dtoClass);
+    protected SofkianoCommand(ObjectMapper mapper, SofkianoCommandUseCase useCase) {
+        super(mapper);
         this.useCase = useCase;
     }
 

@@ -2,25 +2,29 @@ package co.com.sofka.domainconverter;
 
 import org.reactivecommons.utils.ObjectMapper;
 
+import java.lang.reflect.ParameterizedType;
 
-public abstract class DomainMapper<D, M> {
+
+public abstract class DomainMapper<D, T> {
 
     private final ObjectMapper mapper;
-    private final Class<D> domainClass;
-    private final Class<M> dtoClass;
+    protected final Class<D> domainClass;
+    protected final Class<T> dtoClass;
 
-    protected DomainMapper(ObjectMapper mapper, Class<D> domainClass, Class<M> dtoClass) {
+    @SuppressWarnings("unchecked")
+    protected DomainMapper(ObjectMapper mapper) {
         this.mapper = mapper;
-        this.domainClass = domainClass;
-        this.dtoClass = dtoClass;
+        ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
+        this.domainClass = (Class<D>) genericSuperclass.getActualTypeArguments()[0];
+        this.dtoClass = (Class<T>) genericSuperclass.getActualTypeArguments()[1];
     }
 
 
-    protected M domainToDTO(D domainEntity){
+    protected T domainToDTO(D domainEntity){
         return this.mapper.map(domainEntity, this.dtoClass);
     }
 
-    protected D dtoToDomain(M dtoObject){
+    protected D dtoToDomain(T dtoObject){
         return this.mapper.map(dtoObject, this.domainClass);
     }
 }
