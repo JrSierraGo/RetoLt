@@ -5,6 +5,7 @@ import org.reactivecommons.utils.ObjectMapper;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -31,7 +32,7 @@ public abstract class DomainMapper<D, T> {
         return this.mapper.map(dtoObject, this.domainClass);
     }
     protected <O, S> List<S> mapListObject(Collection<O> object, Class<S> classMap){
-        return object.stream()
+        return Optional.ofNullable(object).stream()
                 .map(objectToMapper ->  this.mapper.map(objectToMapper, classMap))
                 .collect(Collectors.toList());
     }

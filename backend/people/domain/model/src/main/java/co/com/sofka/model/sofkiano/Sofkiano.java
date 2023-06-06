@@ -5,6 +5,8 @@ import java.util.List;
 
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder(toBuilder = true)
 public class Sofkiano {
     private String id;

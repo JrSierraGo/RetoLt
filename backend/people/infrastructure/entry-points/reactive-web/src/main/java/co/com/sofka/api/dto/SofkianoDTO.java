@@ -1,15 +1,16 @@
 package co.com.sofka.api.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder(toBuilder = true)
 @ToString
-public class SofkianoDTO {
+public class SofkianoDTO implements Serializable {
 
     private String id;
     private String documentTypeId;
