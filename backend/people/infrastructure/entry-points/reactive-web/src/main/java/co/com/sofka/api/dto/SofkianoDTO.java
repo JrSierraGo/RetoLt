@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.List;
+
 @Data
 @Builder(toBuilder = true)
 @ToString
@@ -18,4 +20,5 @@ public class SofkianoDTO {
     private Long entryDate;
     private String customerId;
     private String status;
+    private List<SkillDTO> skills;
 }

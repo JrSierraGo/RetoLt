@@ -3,6 +3,9 @@ package co.com.sofka.domainconverter;
 import org.reactivecommons.utils.ObjectMapper;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public abstract class DomainMapper<D, T> {
@@ -26,5 +29,14 @@ public abstract class DomainMapper<D, T> {
 
     protected D dtoToDomain(T dtoObject){
         return this.mapper.map(dtoObject, this.domainClass);
+    }
+    protected <O, S> List<S> mapListObject(Collection<O> object, Class<S> classMap){
+        return object.stream()
+                .map(objectToMapper ->  this.mapper.map(objectToMapper, classMap))
+                .collect(Collectors.toList());
+    }
+
+    protected <O, S> S mapObject(O object, Class<S> classMap){
+        return this.mapper.map(object, classMap);
     }
 }

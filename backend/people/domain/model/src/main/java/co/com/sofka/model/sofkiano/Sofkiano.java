@@ -1,6 +1,7 @@
 package co.com.sofka.model.sofkiano;
 import lombok.*;
-//import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @Data
@@ -15,4 +16,5 @@ public class Sofkiano {
     private Long entryDate;
     private String customerId;
     private String status;
+    private List<Skill> skills;
 }
