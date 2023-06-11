@@ -1,5 +1,6 @@
 package co.com.sofka.enums;
 
 public enum PeopleExceptionEnum {
-    PAYLOAD_NOT_CONTAIN_MINIMUM_FIELDS
+    PAYLOAD_NOT_CONTAIN_MINIMUM_FIELDS,
+    ERROR_DATABASE_OPERATION
 }

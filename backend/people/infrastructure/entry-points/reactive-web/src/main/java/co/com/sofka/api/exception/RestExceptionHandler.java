@@ -1,6 +1,7 @@
 package co.com.sofka.api.exception;
 
 import co.com.sofka.api.dto.ErrorHandlerDTO;
+import co.com.sofka.enums.PeopleExceptionEnum;
 import co.com.sofka.exception.PeopleException;
 import lombok.extern.slf4j.Slf4j;
 import org.postgresql.util.PSQLException;
@@ -39,7 +40,7 @@ public class RestExceptionHandler {
                 .body(ErrorHandlerDTO.builder()
                         .code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
                         .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                        .message(ex.getMessage())
+                        .message(PeopleExceptionEnum.ERROR_DATABASE_OPERATION.name())
                         .build()
                 )
         );
