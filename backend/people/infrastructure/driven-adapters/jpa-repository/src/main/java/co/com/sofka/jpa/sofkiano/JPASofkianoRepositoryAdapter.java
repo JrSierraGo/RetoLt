@@ -1,4 +1,4 @@
-package co.com.sofka.jpa.sofkianos;
+package co.com.sofka.jpa.sofkiano;
 
 import co.com.sofka.jpa.helper.AdapterOperations;
 import co.com.sofka.model.sofkiano.Sofkiano;
@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 public class JPASofkianoRepositoryAdapter extends AdapterOperations<SofkianoEntity, Sofkiano, String, JPASofkianoRepository> implements SofkianoRepository {
 
     protected JPASofkianoRepositoryAdapter(JPASofkianoRepository repository, ObjectMapper mapper) {
-        super(repository, mapper, d -> mapper.map(d, SofkianoEntity.class));
+        super(repository, mapper);
     }
 }

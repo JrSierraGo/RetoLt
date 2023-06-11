@@ -1,12 +1,13 @@
 package co.com.sofka.api.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder(toBuilder = true)
 @ToString
 public class SofkianoDTO {
@@ -16,7 +17,7 @@ public class SofkianoDTO {
     private String documentNumber;
     private String name;
     private String lastName;
-    private String locationId;
+    private LocationDTO location;
     private Long entryDate;
     private String customerId;
     private String status;

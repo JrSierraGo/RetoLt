@@ -12,17 +12,19 @@ import java.util.function.Function;
 
 public abstract class AdapterOperations<E, D, I, R extends CrudRepository<E, I> & QueryByExampleExecutor<E>> {
     protected R repository;
-    private Class<D> dataClass;
+    private final Class<D> dataClass;
+    private final Class<E> entityClass;
     protected ObjectMapper mapper;
-    private Function<D, E> toEntityFn;
+    private final Function<D, E> toEntityFn;
 
     @SuppressWarnings("unchecked")
-    protected AdapterOperations(R repository, ObjectMapper mapper, Function<D, E> toEntityFn) {
+    protected AdapterOperations(R repository, ObjectMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
         ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
         this.dataClass = (Class<D>) genericSuperclass.getActualTypeArguments()[1];
-        this.toEntityFn = toEntityFn;
+        this.entityClass = (Class<E>) genericSuperclass.getActualTypeArguments()[0];
+        this.toEntityFn = d -> mapper.map(d, entityClass);
     }
 
     protected D toData(E entity) {
@@ -40,10 +42,12 @@ public abstract class AdapterOperations<E, D, I, R extends CrudRepository<E, I> 
                 .map(this::toData);
     }
 
-    public Flux<E> saveAll(List<E> entities) {
+    public Flux<D> saveAll(List<D> entities) {
         return Flux.fromIterable(entities)
+                .map(this::toEntity)
                 .collectList()
-                .flatMapMany(this::saveData);
+                .flatMapMany(this::saveData)
+                .map(this::toData);
     }
 
     protected Mono<E> saveData(E data) {
@@ -54,11 +58,13 @@ public abstract class AdapterOperations<E, D, I, R extends CrudRepository<E, I> 
         return Flux.fromIterable(repository.saveAll(data));
     }
 
-    public Mono<E> findById(I id) {
-        return Mono.justOrEmpty(repository.findById(id));
+    public Mono<D> findById(I id) {
+        return Mono.justOrEmpty(repository.findById(id))
+                .map(this::toData);
     }
 
-    public Flux<E> findAll(){
-        return Flux.fromIterable(repository.findAll());
+    public Flux<D> findAll(){
+        return Flux.fromIterable(repository.findAll())
+                .map(this::toData);
     }
 }

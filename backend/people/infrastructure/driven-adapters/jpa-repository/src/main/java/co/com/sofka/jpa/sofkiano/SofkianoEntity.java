@@ -1,4 +1,4 @@
-package co.com.sofka.jpa.sofkianos;
+package co.com.sofka.jpa.sofkiano;
 
 import lombok.Data;
 
@@ -20,8 +20,6 @@ public class SofkianoEntity {
     private String name;
     @Column(name = "last_name")
     private String lastName;
-    @Column(name = "location_id")
-    private String locationId;
     @Column(name = "entry_date")
     private Long entryDate;
     @Column(name = "customer_id")

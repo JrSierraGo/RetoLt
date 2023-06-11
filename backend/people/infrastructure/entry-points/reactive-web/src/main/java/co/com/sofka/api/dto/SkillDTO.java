@@ -1,10 +1,12 @@
 package co.com.sofka.api.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
-@Data
+
+@Getter
+@Setter
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder(toBuilder = true)
 @ToString
 public class SkillDTO {

@@ -1,13 +1,13 @@
-package co.com.sofka.model.sofkiano;
+package co.com.sofka.model.sofkianostack;
+import lombok.*;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder(toBuilder = true)
-@ToString
-public class Skill {
+public class Stack {
     private String id;
     private String sofkianoId;
     private String skillId;

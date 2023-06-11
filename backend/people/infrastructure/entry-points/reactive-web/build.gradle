@@ -4,5 +4,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation('org.reactivecommons.utils:object-mapper-api:0.1.0')
+    implementation "org.postgresql:postgresql:${postgresVersion}"
     implementation project(path: ':domain-converter')
 }

@@ -1,10 +1,17 @@
 package co.com.sofka.model.sofkiano;
+
+import co.com.sofka.model.location.Location;
+import co.com.sofka.model.sofkianostack.Stack;
 import lombok.*;
 
 import java.util.List;
 
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
+@AllArgsConstructor
+@ToString
 @Builder(toBuilder = true)
 public class Sofkiano {
     private String id;
@@ -12,9 +19,9 @@ public class Sofkiano {
     private String documentNumber;
     private String name;
     private String lastName;
-    private String locationId;
+    private Location location;
     private Long entryDate;
     private String customerId;
     private String status;
-    private List<Skill> skills;
+    private List<Stack> stacks;
 }

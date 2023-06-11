@@ -1,4 +1,4 @@
-package co.com.sofka.jpa.sofkianos;
+package co.com.sofka.jpa.sofkiano;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
