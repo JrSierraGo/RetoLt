@@ -7,8 +7,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public abstract class AdapterOperations<E, D, I, R extends CrudRepository<E, I> & QueryByExampleExecutor<E>> {
     protected R repository;
@@ -29,6 +32,12 @@ public abstract class AdapterOperations<E, D, I, R extends CrudRepository<E, I> 
 
     protected D toData(E entity) {
         return mapper.map(entity, dataClass);
+    }
+
+    protected List<D> toData(List<E> entityList) {
+        return Optional.ofNullable(entityList).orElse(Collections.emptyList()).stream()
+                .map(objectToMapper ->  this.mapper.map(objectToMapper, dataClass))
+                .collect(Collectors.toList());
     }
 
     protected E toEntity(D data) {
