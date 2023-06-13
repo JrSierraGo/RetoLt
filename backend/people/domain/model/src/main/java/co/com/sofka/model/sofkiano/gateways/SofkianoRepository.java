@@ -10,4 +10,6 @@ public interface SofkianoRepository {
 
     Mono<SofkianoPageable> findAll(Integer page, Integer size, String sortParam);
 
+    Mono<Sofkiano> findById(String id);
+
 }

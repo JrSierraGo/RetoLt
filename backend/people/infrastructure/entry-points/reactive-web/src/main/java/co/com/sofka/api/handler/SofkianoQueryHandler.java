@@ -4,7 +4,7 @@ import co.com.sofka.api.dto.SofkianoDTO;
 import co.com.sofka.domainconverter.DomainMapper;
 import co.com.sofka.model.sofkiano.Sofkiano;
 import co.com.sofka.model.sofkiano.SofkianoPageable;
-import co.com.sofka.usecase.SofkianoHandlerUseCase;
+import co.com.sofka.usecase.handler.SofkianoHandlerUseCase;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

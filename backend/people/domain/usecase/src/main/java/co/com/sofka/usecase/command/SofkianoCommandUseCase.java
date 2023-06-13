@@ -1,5 +1,6 @@
-package co.com.sofka.usecase;
+package co.com.sofka.usecase.command;
 
+import co.com.sofka.enums.Constants;
 import co.com.sofka.enums.LocationStatusEnum;
 import co.com.sofka.enums.PeopleExceptionEnum;
 import co.com.sofka.enums.SofkianoStatusEnum;
@@ -20,6 +21,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
+import static co.com.sofka.enums.Constants.EMPTY;
+
 
 @RequiredArgsConstructor
 public class SofkianoCommandUseCase {
@@ -29,8 +32,6 @@ public class SofkianoCommandUseCase {
     private final SofkianoStackRepository sofkianoStackRepository;
 
     Logger log = Logger.getLogger(this.getClass().getName());
-
-    private static final String EMPTY = "";
 
     public Mono<Sofkiano> process(Sofkiano sofkianoParam){
         log.info(":::: Start SofkianoCommandUseCase.process" + sofkianoParam);

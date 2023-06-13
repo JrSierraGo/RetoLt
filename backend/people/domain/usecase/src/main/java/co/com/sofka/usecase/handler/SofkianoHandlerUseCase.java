@@ -1,4 +1,4 @@
-package co.com.sofka.usecase;
+package co.com.sofka.usecase.handler;
 
 import co.com.sofka.model.sofkiano.SofkianoPageable;
 import co.com.sofka.model.sofkiano.gateways.SofkianoRepository;
