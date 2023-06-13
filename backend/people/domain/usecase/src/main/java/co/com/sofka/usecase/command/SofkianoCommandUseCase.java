@@ -1,6 +1,5 @@
 package co.com.sofka.usecase.command;
 
-import co.com.sofka.enums.Constants;
 import co.com.sofka.enums.LocationStatusEnum;
 import co.com.sofka.enums.PeopleExceptionEnum;
 import co.com.sofka.enums.SofkianoStatusEnum;

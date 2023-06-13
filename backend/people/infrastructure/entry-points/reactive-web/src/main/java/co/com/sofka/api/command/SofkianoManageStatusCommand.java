@@ -1,6 +1,5 @@
 package co.com.sofka.api.command;
 
-import co.com.sofka.api.dto.SofkianoDTO;
 import co.com.sofka.api.dto.SofkianoStatusDTO;
 import co.com.sofka.domainconverter.DomainMapper;
 import co.com.sofka.model.sofkiano.Sofkiano;

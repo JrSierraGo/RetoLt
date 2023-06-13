@@ -17,6 +17,7 @@ public class SofkianoHandlerUseCase {
     Logger log = Logger.getLogger(this.getClass().getName());
 
     public Mono<SofkianoPageable> getAll(Integer page, Integer size) {
+        log.info("Enter SofkianoHandlerUseCase.getAll(page:"+ page + "size: "+ size);
         return sofkianoRepository.findAll(page, size, SORT_PARAM);
     }
 }
