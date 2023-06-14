@@ -1,6 +1,7 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
+	implementation project( ':mq-sender')
 	implementation project( ':domain-converter')
 	implementation project( ':reactive-web')
 	implementation 'org.reactivecommons.utils:object-mapper:0.1.0'
@@ -8,6 +9,7 @@ dependencies {
     implementation project(':model')
     implementation project(':usecase')
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
 }
 

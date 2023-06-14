@@ -25,6 +25,22 @@ spring:
   jpa:
     database: "POSTGRESQL"
     databasePlatform: "org.hibernate.dialect.PostgreSQLDialect"
+  rabbitmq:
+    connection-timeout: 10000
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+    virtual-host: "/"
+    maxPriority: 50
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: "5s"
+          max-attempts: 3
+          max-interval: "10s"
+          multiplier: 2
 management:
   endpoints:
     web:
@@ -34,3 +50,8 @@ management:
     health:
       probes:
         enabled: true
+broker:
+  exchanges:
+    stats: "stats-exchange"
+  routingKeys:
+    sofkianoChanges: "sofkiano.command.changes"

@@ -5,6 +5,7 @@ import co.com.sofka.enums.PeopleExceptionEnum;
 import co.com.sofka.enums.SofkianoStatusEnum;
 import co.com.sofka.exception.PeopleException;
 import co.com.sofka.model.location.gateways.LocationRepository;
+import co.com.sofka.model.mq.gateways.RabbitMQService;
 import co.com.sofka.model.sofkiano.Sofkiano;
 import co.com.sofka.model.sofkiano.gateways.SofkianoRepository;
 import co.com.sofka.model.sofkianostack.gateways.SofkianoStackRepository;
@@ -29,6 +30,7 @@ public class SofkianoCommandUseCase {
     private final SofkianoRepository sofkianoRepository;
     private final LocationRepository locationRepository;
     private final SofkianoStackRepository sofkianoStackRepository;
+    private final RabbitMQService<Sofkiano> rabbitMQService;
 
     Logger log = Logger.getLogger(this.getClass().getName());
 
@@ -43,6 +45,7 @@ public class SofkianoCommandUseCase {
                         .build()
                 )
                 .flatMap(sofkianoRepository::save)
+                .doOnNext(rabbitMQService::sendMessage)
                 .flatMap(saveSofkianoLocation(sofkianoParam))
                 .flatMap(saveSofkianoStack(sofkianoParam))
                 .doOnError(error -> log.severe("Error in SofkianoCommandUseCase.process " + error.getMessage()));
