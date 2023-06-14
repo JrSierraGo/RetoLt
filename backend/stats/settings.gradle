@@ -16,3 +16,5 @@ project(':model').projectDir = file('./domain/model')
 project(':usecase').projectDir = file('./domain/usecase')
 include ':reactive-web'
 project(':reactive-web').projectDir = file('./infrastructure/entry-points/reactive-web')
+include ':mq-listener'
+project(':mq-listener').projectDir = file('./infrastructure/entry-points/mq-listener')

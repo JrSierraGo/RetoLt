@@ -1,10 +1,12 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
+	implementation project( ':mq-listener')
 	implementation project( ':reactive-web')
     implementation project(':model')
     implementation project(':usecase')
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
 }
 
