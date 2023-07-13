@@ -16,12 +16,14 @@ import java.util.List;
 public class Sofkiano {
     private String id;
     private String documentTypeId;
+    private String documentTypeName;
     private String documentNumber;
     private String name;
     private String lastName;
     private Location location;
     private Long entryDate;
     private String customerId;
+    private String customerName;
     private String status;
     private List<Stack> stacks;
 }
