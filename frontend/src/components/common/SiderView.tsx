@@ -29,20 +29,21 @@ export const SiderView = () => {
     })
   );
 
+  const siderStyle: React.CSSProperties = {
+    textAlign: 'center',
+    lineHeight: '120px'
+  };
+
   
   return (
-    <Layout>
-      <Sider width={200}>
-        <Menu
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          defaultOpenKeys={["1"]}
-          style={{
-            height: "100%",
-          }}
-          items={itemList}
-        />
-      </Sider>
-    </Layout>
+    <Sider>
+      <Menu
+        mode="inline"
+        style={{
+          height: "100%",
+        }}
+        items={itemList}
+      />
+   </Sider>
   );
 };
