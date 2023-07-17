@@ -18,6 +18,7 @@ export const CreateSofkianoPage = () => {
     layout="horizontal"
     style={{ maxWidth: 600 }}
     autoComplete="off"
+    initialValues={sofkiano}
     >
 
         <Form.Item
@@ -39,7 +40,7 @@ export const CreateSofkianoPage = () => {
 
         <Form.Item
             label="Tipo Documento"
-            name="documentType"
+            name="documentTypeName"
             rules={[{ required: true, message: 'Este dato es requerido' }]}
         >
             <Select placeholder="Seleccione tipo documento">
@@ -59,8 +60,7 @@ export const CreateSofkianoPage = () => {
 
         <Form.Item
             label="Cliente"
-            name="customer"
-            rules={[{ required: true, message: 'Este dato es requerido' }]}
+            name="customerName"
         >
             <Select placeholder="Seleccione el cliente">
                 <Option value="male">Compensar</Option>
