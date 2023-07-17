@@ -1,5 +1,9 @@
 server:
   port: 8080
+web:
+  cors:
+    allowed-origins: "*"
+    max-age: 3600
 spring:
   application:
     name: "people"
