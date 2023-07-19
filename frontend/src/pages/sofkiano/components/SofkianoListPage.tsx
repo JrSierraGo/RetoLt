@@ -1,5 +1,5 @@
 import Table from "antd/es/table";
-import { useSofkiano } from "../hooks/useSofkiano";
+import { useCreateSofkiano } from "../hooks/useCreateSofkiano";
 import { Fragment } from "react";
 import { Button } from "antd";
 
@@ -9,7 +9,7 @@ const SofkianoListPage = () => {
     sofkianoList,
     columns,
     goToCreateSofkiano
-  } = useSofkiano();
+  } = useCreateSofkiano();
 
   return (
   <Fragment>

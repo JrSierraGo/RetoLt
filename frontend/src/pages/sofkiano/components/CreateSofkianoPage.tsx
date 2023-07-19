@@ -1,15 +1,32 @@
-import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
+import { Button, DatePicker, Divider, Form, Input, Row, Select } from "antd";
 import { Fragment } from "react";
-import { useLocation } from "react-router-dom";
+import { useListSofkiano } from "../hooks/useListSofkiano";
+import { DocumentType } from "../../../types/DocumentType";
+import { Customer } from "../../../types/Customer";
+import { Country } from "../../../types/Country";
+import { State } from "../../../types/State";
+import { City } from "../../../types/City";
+import { Sofkiano } from "../../../types/Sofkiano";
 
 const { Option } = Select;
+const {TextArea} = Input
 
 export const CreateSofkianoPage = () => {
 
-    const {state} = useLocation();
-    const {sofkiano} = state;
+    const {
+        doumentTypeList,
+        customerList,
+        countryList,
+        stateList,
+        getStatesByCountryId,
+        cityList,
+        getCityByStateId,
+        sofkianoEditing
+      } = useListSofkiano();
 
-    console.log(sofkiano)
+    function onFinishForm(values: Sofkiano): void {
+        console.log(values)
+    }
 
   return ( <Fragment>
     <Form 
@@ -18,7 +35,8 @@ export const CreateSofkianoPage = () => {
     layout="horizontal"
     style={{ maxWidth: 600 }}
     autoComplete="off"
-    initialValues={sofkiano}
+    initialValues={sofkianoEditing}
+    onFinish={onFinishForm}
     >
 
         <Form.Item
@@ -40,13 +58,15 @@ export const CreateSofkianoPage = () => {
 
         <Form.Item
             label="Tipo Documento"
-            name="documentTypeName"
+            name="documentTypeId"
             rules={[{ required: true, message: 'Este dato es requerido' }]}
         >
             <Select placeholder="Seleccione tipo documento">
-                <Option value="male">CC</Option>
-                <Option value="female">TI</Option>
-                <Option value="other">PE</Option>
+                {
+                    doumentTypeList.map((documentType:DocumentType) => {
+                        return  <Option key={documentType.id} value={documentType.id}>{`${documentType.acronym} - ${documentType.name}`}</Option>
+                    })
+                }
             </Select>
         </Form.Item>
         
@@ -63,8 +83,11 @@ export const CreateSofkianoPage = () => {
             name="customerName"
         >
             <Select placeholder="Seleccione el cliente">
-                <Option value="male">Compensar</Option>
-                <Option value="female">Sura</Option>
+                {
+                customerList.map((customer:Customer) => {
+                    return  <Option key={customer.id} value={customer.id}>{customer.name}</Option>
+                })
+                }
             </Select>
         </Form.Item>
 
@@ -76,11 +99,85 @@ export const CreateSofkianoPage = () => {
             <DatePicker placeholder="Seleccione Fecha" />
         </Form.Item>
 
+
+
+        <Divider orientation="center">
+            Ubicación
+        </Divider>
+
+        <Form.Item
+            label="Pais"
+            name="countryName"
+        >
+            <Select onChange={getStatesByCountryId} placeholder="Seleccione el Pais">
+            {
+            countryList.map((country:Country) => {
+                return  <Option key={country.id} value={country.id}>{country.name}</Option>
+            })
+            }
+            </Select>
+        </Form.Item>
+
+        <Form.Item
+            label="Estado"
+            name="stateName"
+        >
+            <Select onChange={getCityByStateId} placeholder="Seleccione la ciudad">
+            {
+            stateList.map((state:State) => {
+                return  <Option key={state.id} value={state.id}>{state.name}</Option>
+            })
+            }
+            </Select>
+        </Form.Item>
+
+        <Form.Item
+            label="Ciudad"
+            name="cityName"
+            rules={[{ required: true, message: 'Este dato es requerido' }]}
+        >
+            <Select placeholder="Seleccione la ciudad">
+            {
+            cityList.map((city:City) => {
+                
+                return  <Option key={city.id} value={city.id}>{city.name}</Option>
+            })
+            }
+            </Select>
+        </Form.Item>
+
+        <Form.Item
+            label="Dirección"
+            name="address"
+            rules={[{ required: true, message: 'Este dato es requerido' }]}
+        >
+            <Input placeholder="Cra 1a #2b-3"/>
+        </Form.Item>
+        <Form.Item
+            label="Barrio"
+            name="neighborhood"
+            rules={[{ required: true, message: 'Este dato es requerido' }]}
+        >
+            <Input placeholder="La Floresta"/>
+        </Form.Item>
+        <Form.Item
+            label="Datos adicionales"
+            name="additionalIndications"
+        >
+            <TextArea placeholder="Torre 1 Apto 202 Urbanización abc"/>
+        </Form.Item>
+
+
+
+
+
+
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
                 Guardar
             </Button>
         </Form.Item>
+
     </Form>
 
   </Fragment>

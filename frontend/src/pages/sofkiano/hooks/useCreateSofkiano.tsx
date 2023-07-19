@@ -6,7 +6,7 @@ import { Sofkiano } from "../../../types/Sofkiano";
 import { useNavigate } from "react-router-dom";
 import { EditOutlined } from "@ant-design/icons";
 
-export const useSofkiano = () => {
+export const useCreateSofkiano = () => {
 
   const navigate = useNavigate();
 

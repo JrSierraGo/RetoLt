@@ -1,3 +1,5 @@
+import { Location } from "./Location";
+
 export interface Sofkiano {
     id: string;
     documentTypeId: string;
@@ -8,4 +10,5 @@ export interface Sofkiano {
     customerId: string;
     status: string;
     skills: string[]
+    location: Location
   }
