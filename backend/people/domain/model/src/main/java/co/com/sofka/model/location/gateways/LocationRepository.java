@@ -7,4 +7,6 @@ public interface LocationRepository {
     Mono<Location> save(Location location);
     Mono<Location> findById(String id);
     Mono<Location> findByStatusAndIdNot(String status, String id);
+
+    Mono<Location> findBySofkianoId(String sofkianoId);
 }

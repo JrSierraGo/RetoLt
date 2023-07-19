@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface JPALocationRepository extends CrudRepository<LocationEntity, String>, QueryByExampleExecutor<LocationEntity> {
 
     Optional<LocationEntity> findByStatusAndIdNot(String status, String id);
+
+    Optional<LocationEntity> findBySofkianoId(String sofkianoId);
 }

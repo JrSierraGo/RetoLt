@@ -19,4 +19,10 @@ public class JPALocationRepositoryAdapter extends AdapterOperations<LocationEnti
         return Mono.justOrEmpty(repository.findByStatusAndIdNot(status, id))
                 .map(this::toData);
     }
+
+    @Override
+    public Mono<Location> findBySofkianoId(String sofkianoId) {
+        return Mono.justOrEmpty(repository.findBySofkianoId(sofkianoId))
+                .map(this::toData);
+    }
 }
