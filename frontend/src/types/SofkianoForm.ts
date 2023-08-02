@@ -1,14 +1,15 @@
-import { Location } from "./Location";
-
-export interface Sofkiano {
+export interface SofkianoForm {
     id: string;
     documentTypeId: string;
     documentNumber: string;
     name: string;
     lastName: string;
-    entryDate: number;
+    entryDate: Date;
     customerId: string;
     status?: string;
+    cityId: string
+    address: string;
+    neighborhood: string;
+    additionalIndications?: string;
     skills?: string[]
-    location: Location
   }

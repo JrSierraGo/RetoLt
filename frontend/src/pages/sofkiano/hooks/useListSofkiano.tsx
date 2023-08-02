@@ -1,88 +1,121 @@
-import { useEffect, useState } from 'react'
-import DocumentTypeService from '../../../services/api/DocumentTypeService';
-import CustomerService from '../../../services/api/CustomerService';
-import CountryService from '../../../services/api/CountryService';
-import StateService from '../../../services/api/StateService';
-import cityService from '../../../services/api/CityService';
-import CityService from '../../../services/api/CityService';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import SofkianoService from "../../../services/api/SofkianoService";
+import { ColumnsType } from "antd/es/table";
+import { Button, Switch } from "antd";
+import { Sofkiano } from "../../../types/Sofkiano";
+import { useNavigate } from "react-router-dom";
+import { EditOutlined } from "@ant-design/icons";
 
 export const useListSofkiano = () => {
 
-    const [doumentTypeList, setDocumentTypeList] = useState([])
-    const [customerList, setCustomerList] = useState([])
-    const [countryList, setCountryList] = useState([])
-    const [stateList, setStateList] = useState([])
-    const [cityList, setCityList] = useState([])
-    const [sofkianoEditing, setsofkianoEditing] = useState({})
+  const navigate = useNavigate();
 
-    const {state} = useLocation();
-    const {sofkiano} = state;
 
-    useEffect(() => {
-      console.log(sofkiano)
+  const [sofkianoList, setSofkianoList] = useState<Sofkiano[]>([]);
+  const [isChangedStatus, setIsChangedStatus] = useState(false);
+  const [pagination, setPagination] = useState({
+    current: 0,
+    size: 10,
+    total: 0
+  });
 
-      setsofkianoEditing(sofkiano)
+  const columns: ColumnsType<Sofkiano> = [
+    {
+      title: 'Nombres',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Apellidos',
+      dataIndex: 'lastName',
+      key: 'lastName',
+    },
+    {
+      title: 'Tipo Documento',
+      dataIndex: 'documentTypeName',
+      key: 'documentTypeName',
+    },
+    {
+      title: 'Numero Documento',
+      dataIndex: 'documentNumber',
+      key: 'documentNumber',
+    },
+    {
+      title: 'Cliente',
+      dataIndex: 'customerName',
+      key: 'customerName',
+    },
+    {
+      title: 'Estado',
+      dataIndex: 'status',
+      key: 'status',
+      render: (statusParam:string, record) => <Switch checked={record.status === 'ACTIVE' ? true : false} onChange={(value) => onChangeStatus(value, record, statusParam)} />
+    },
+    {
+      title: 'Accion',
+      dataIndex: 'action',
+      key: 'action',
+      render: (param, record) => <Button shape="round" icon={<EditOutlined />}  onClick={(e) => goToEditSofkiano(record)}></Button>
+    }
+  ]
 
-      getDocumentTypes();
-      getCustomers();
-      getCountries()
+  useEffect(() => {
 
-    
-    }, []);
-
-    const getDocumentTypes = () => {
-      DocumentTypeService.getAll()
+    const getSofkianosList = () => {
+      SofkianoService.getSofkianosList(pagination.current, pagination.size)
       .then(response => {
-        setDocumentTypeList(response)
+        if (response) {
+          setSofkianoList(response.sofkianos)
+          setPagination({
+            ...pagination, 
+            total: response.totalPages
+          })
+          }
       })
       .catch(error => console.log(error));
     }
 
-    const getCustomers = () => {
-      CustomerService.getAll()
-      .then(response => {
-        setCustomerList(response)
-      })
-      .catch(error => console.log(error));
-    }
+    getSofkianosList();
+  }, []);
 
-    const getCountries = () => {
-      CountryService.getAll()
-      .then(response => {
-        setCountryList(response)
-      })
-      .catch(error => console.log(error));
-    }
+  const changeSofkianoStatus = async (sofkianoId:string, status:string, entryDate?:number): Promise<boolean> => {
+    let changed:boolean = false;
+    return await SofkianoService.saveStatusChange({sofkianoId, status, entryDate})
+    .then(response => {
+      if (response){
+        changed = true
+      }
+      return changed
+    })
+    .catch(error => {
+      console.log(error)
+      return false;
+    });
 
-    const getStatesByCountryId = (countryId:string) => {
-      setCityList([])
-      setStateList([])
-      StateService.getStateListByCountry(countryId)
-      .then(response => {
-        setStateList(response)
-      })
-      .catch(error => console.log(error));
-    }
+  }
 
-    const getCityByStateId = (stateId:string) => {
-      setCityList([])
-      CityService.getCityListByState(stateId)
-      .then(response => {
-        setCityList(response)
-      })
-      .catch(error => console.log(error));
+  const onChangeStatus = async (value:boolean, record:any, statusParam: string) => {
+    const status = value ? 'ACTIVE' : 'INACTIVE'
+    let index = sofkianoList.indexOf(record);
+    console.log(index)
+    const response = await changeSofkianoStatus(record.id, status)
+    if(!response){
+      value = !value
+      sofkianoList[index].status = 'INACTIVE'
     }
+  }
 
+  const goToCreateSofkiano = () => {
+    navigate("/sofkianos/crear", {state:{sofkiano:null}})
+  }
+
+  const goToEditSofkiano = (sofkiano:Sofkiano) => {
+    navigate(`/sofkianos/editar/${sofkiano.id}`, {state: {sofkiano}})
+  }
 
   return {
-    doumentTypeList,
-    customerList,
-    countryList,
-    stateList,
-    getStatesByCountryId,
-    cityList,
-    getCityByStateId,
-    sofkianoEditing
-  }
-}
+    sofkianoList,
+    columns,
+    goToCreateSofkiano
+  };
+};

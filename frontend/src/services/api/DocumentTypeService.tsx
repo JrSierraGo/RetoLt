@@ -11,7 +11,7 @@ class DocumentTypeService {
             })
             return response.json()
         } catch (error) {
-            return console.error(error)
+            return {}
         }
     }
 

@@ -1,3 +1,4 @@
+import { Sofkiano } from "../../types/Sofkiano"
 
 class SofkianoService {
 
@@ -19,6 +20,23 @@ class SofkianoService {
         console.log(sofkiano)
         try {
             const response = await fetch(`http://localhost:8080/api/ms-people/sofkiano/command/manage-status`, {
+                method: 'POST',
+                body: JSON.stringify(sofkiano),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+            })
+            return response.json()
+        } catch (error) {
+            return console.error(error)
+        }
+    }
+
+    async save(sofkiano: any) {
+        console.log(sofkiano)
+        try {
+            const response = await fetch(`http://localhost:8080/api/ms-people/sofkiano/command/save`, {
                 method: 'POST',
                 body: JSON.stringify(sofkiano),
                 headers: {

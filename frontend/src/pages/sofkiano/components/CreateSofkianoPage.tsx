@@ -1,15 +1,21 @@
 import { Button, DatePicker, Divider, Form, Input, Row, Select } from "antd";
 import { Fragment } from "react";
-import { useListSofkiano } from "../hooks/useListSofkiano";
+import { useCreateSofkiano } from "../hooks/useCreateSofkiano";
 import { DocumentType } from "../../../types/DocumentType";
 import { Customer } from "../../../types/Customer";
 import { Country } from "../../../types/Country";
 import { State } from "../../../types/State";
 import { City } from "../../../types/City";
 import { Sofkiano } from "../../../types/Sofkiano";
+import moment from "moment";
+import { SofkianoForm } from "../../../types/SofkianoForm";
+import 'dayjs/locale/es'
+import dayjs from "dayjs";
 
 const { Option } = Select;
 const {TextArea} = Input
+
+dayjs.locale('es');
 
 export const CreateSofkianoPage = () => {
 
@@ -21,21 +27,50 @@ export const CreateSofkianoPage = () => {
         getStatesByCountryId,
         cityList,
         getCityByStateId,
-        sofkianoEditing
-      } = useListSofkiano();
+        sofkianoEditing,
+        setSofkianoToSave,
+        saveSofkiano,
+        form
+      } = useCreateSofkiano();
 
-    function onFinishForm(values: Sofkiano): void {
-        console.log(values)
+    const dateToEpoch = (date:Date): number => {
+        return moment(date).valueOf();
+    }  
+
+    const onFinishForm = (): void => {
+        saveSofkiano();
+    }
+
+    const onFieldsChange = (_: any, sofkianoForm: SofkianoForm): void => {
+        let sofkianoToSave: Sofkiano = {
+            id: sofkianoEditing?.id,
+            name: sofkianoForm.name,
+            lastName: sofkianoForm.lastName,
+            documentTypeId: sofkianoForm.documentTypeId,
+            documentNumber: sofkianoForm.documentNumber,
+            customerId: sofkianoForm.customerId,
+            entryDate: dateToEpoch(sofkianoForm.entryDate),
+            location:{
+                id: sofkianoEditing?.locationId,
+                cityId: sofkianoForm.cityId,
+                address: sofkianoForm.address,
+                neighborhood: sofkianoForm.neighborhood,
+                additionalIndications: sofkianoForm.additionalIndications
+            }
+        }
+        setSofkianoToSave(sofkianoToSave)
     }
 
   return ( <Fragment>
     <Form 
+    form={form}
     labelCol={{ span: 6 }}
     wrapperCol={{ span: 16 }}
     layout="horizontal"
     style={{ maxWidth: 600 }}
     autoComplete="off"
     initialValues={sofkianoEditing}
+    onValuesChange={onFieldsChange}
     onFinish={onFinishForm}
     >
 
@@ -80,7 +115,7 @@ export const CreateSofkianoPage = () => {
 
         <Form.Item
             label="Cliente"
-            name="customerName"
+            name="customerId"
         >
             <Select placeholder="Seleccione el cliente">
                 {
@@ -93,10 +128,10 @@ export const CreateSofkianoPage = () => {
 
         <Form.Item
             label="Fecha de ingreso"
-            name="entryDate"
+            name="entryDateSofkiano"
             rules={[{ required: true, message: 'Este dato es requerido' }]}
             >
-            <DatePicker placeholder="Seleccione Fecha" />
+            <DatePicker value={sofkianoEditing?.entryDate ? dayjs(sofkianoEditing.entryDate) : undefined} placeholder="Seleccione Fecha" />
         </Form.Item>
 
 
@@ -107,7 +142,7 @@ export const CreateSofkianoPage = () => {
 
         <Form.Item
             label="Pais"
-            name="countryName"
+            name="countryId"
         >
             <Select onChange={getStatesByCountryId} placeholder="Seleccione el Pais">
             {
@@ -120,7 +155,7 @@ export const CreateSofkianoPage = () => {
 
         <Form.Item
             label="Estado"
-            name="stateName"
+            name="stateId"
         >
             <Select onChange={getCityByStateId} placeholder="Seleccione la ciudad">
             {
@@ -133,7 +168,7 @@ export const CreateSofkianoPage = () => {
 
         <Form.Item
             label="Ciudad"
-            name="cityName"
+            name="cityId"
             rules={[{ required: true, message: 'Este dato es requerido' }]}
         >
             <Select placeholder="Seleccione la ciudad">
@@ -166,9 +201,6 @@ export const CreateSofkianoPage = () => {
         >
             <TextArea placeholder="Torre 1 Apto 202 Urbanización abc"/>
         </Form.Item>
-
-
-
 
 
 
