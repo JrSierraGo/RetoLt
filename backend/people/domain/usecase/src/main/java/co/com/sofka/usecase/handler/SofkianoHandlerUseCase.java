@@ -31,17 +31,17 @@ public class SofkianoHandlerUseCase {
     public Mono<SofkianoPageable> getAll(Integer page, Integer size) {
         log.info("Enter SofkianoHandlerUseCase.getAll(page: "+ page + " size: "+ size);
 
-        Map<String, DocumentType> documentTypeMap = new HashMap<>();
+        Map<String, String> documentTypeMap = new HashMap<>();
 
         return documentTypeRepository.findAll()
-                .collectMap(DocumentType::getId)
+                .collectMap(DocumentType::getId, DocumentType::getAcronym)
                 .doOnNext(documentTypeMap::putAll)
                 .flatMap(documents -> sofkianoRepository.findAll(page, size, SORT_PARAM))
                 .flatMap(sofkianoPageable -> Flux.fromIterable(sofkianoPageable.getSofkianos())
                         .flatMap(sofkiano -> customerRepository.findById(Objects.requireNonNullElse(sofkiano.getCustomerId(), EMPTY))
                                 .defaultIfEmpty(Customer.builder().build())
                                 .map(customer -> sofkiano.toBuilder()
-                                        .documentTypeName(documentTypeMap.get(sofkiano.getDocumentTypeId()).getAcronym())
+                                        .documentTypeName(documentTypeMap.get(sofkiano.getDocumentTypeId()))
                                         .customerName(customer.getName()).build()
                                 )
                         )

@@ -10,6 +10,11 @@ import lombok.*;
 public class Location {
     private String id;
     private String cityId;
+    private String cityName;
+    private String stateId;
+    private String stateName;
+    private String countryId;
+    private String countryName;
     private String address;
     private String neighborhood;
     private String additionalIndications;

@@ -9,5 +9,5 @@ public interface JPALocationRepository extends CrudRepository<LocationEntity, St
 
     Optional<LocationEntity> findByStatusAndIdNot(String status, String id);
 
-    Optional<LocationEntity> findBySofkianoId(String sofkianoId);
+    Optional<LocationEntity> findBySofkianoIdAndStatus(String sofkianoId, String status);
 }

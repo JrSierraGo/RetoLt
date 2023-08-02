@@ -8,5 +8,5 @@ public interface LocationRepository {
     Mono<Location> findById(String id);
     Mono<Location> findByStatusAndIdNot(String status, String id);
 
-    Mono<Location> findBySofkianoId(String sofkianoId);
+    Mono<Location> findBySofkianoIdAndStatus(String sofkianoId, String status);
 }
